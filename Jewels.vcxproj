@@ -13,12 +13,17 @@
   <ItemGroup>
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\engine\IEntity.h" />
-    <ClInclude Include="src\engine\Matrix.h" />
     <ClInclude Include="src\engine\Scene.h" />
+    <ClInclude Include="src\engine\Util.h" />
+    <ClInclude Include="src\engine\Vector.h" />
+    <ClInclude Include="src\JewelFactory.h" />
+    <ClInclude Include="src\JewelView.h" />
     <ClInclude Include="src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\Scene.cpp" />
+    <ClCompile Include="src\JewelFactory.cpp" />
+    <ClCompile Include="src\JewelView.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include "engine/Scene.h"
+#include "JewelFactory.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_Image.h"
 #include <tchar.h>
@@ -11,7 +12,11 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    Engine::Scene scene;
+    using namespace Engine;
+    using namespace Game;
+
+    Scene scene;
+    JewelFactory factory;
     SDL_Event event;
 
     // Load the background
@@ -27,6 +32,15 @@ int _tmain(int argc, _TCHAR* argv[])
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_WM_SetCaption(APP_NAME, NULL);
     SDL_Surface* surf = SDL_SetVideoMode(bkg->w, bkg->h, 32, SDL_HWSURFACE);
+
+    // Test adding some jewels
+    for ( int i = 1; i <= 2; ++i )
+    {
+        auto jewel = factory.createView(JewelFactory::GREEN);
+        jewel->setPosition(vec2i(50*i, 50));
+        jewel->setSelected(i == 1);
+        scene.addEntity(jewel);
+    }
 
     // Game loop
     do
