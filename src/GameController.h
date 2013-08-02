@@ -19,6 +19,8 @@ namespace Game
                     GameController      ( int width, int height );
                     ~GameController     ();
 
+        void        initialize          ();
+
         void        swapJewels          ( int x1, int y1, int x2, int y2 );
         bool        update              ();
 

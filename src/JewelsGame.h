@@ -8,6 +8,7 @@
 #pragma once
 
 #include "engine/Scene.h"
+#include "GameController.h"
 
 namespace Game
 {
@@ -22,6 +23,7 @@ namespace Game
         void        handleClick     ( int x, int y );
 
     private:
+        GameController  mController;
         Engine::Scene*  mScene;
     };
 }

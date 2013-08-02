@@ -11,12 +11,14 @@ namespace Game
 {
     enum JewelType
     {
-        EMPTY,
+        EMPTY = 0,
         BLUE,
         GREEN,
         PURPLE,
         RED,
         YELLOW,
-        TYPE_COUNT
+        TYPE_COUNT,
+        FIRST_JEWEL = BLUE,
+        LAST_JEWEL = YELLOW
     };
 }
