@@ -18,6 +18,7 @@ namespace Game
     private:
                                 JewelView       ( const JewelView& other );
                                 JewelView       ( SDL_Surface* bitmap );
+    public:
         virtual                 ~JewelView      ();
 
 

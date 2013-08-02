@@ -9,6 +9,7 @@
 
 #include "engine/Scene.h"
 #include "GameController.h"
+#include "GameBoardView.h"
 
 namespace Game
 {
@@ -24,6 +25,7 @@ namespace Game
 
     private:
         GameController  mController;
+        GameBoardView   mView;
         Engine::Scene*  mScene;
     };
 }

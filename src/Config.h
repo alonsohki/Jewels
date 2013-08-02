@@ -8,7 +8,9 @@
 #pragma once
 
 #define APP_NAME "Jewels"
-#define NUMCOLS 5
-#define NUMROWS 5
-#define BOARD_X 200
+#define NUMCOLS 6
+#define NUMROWS 6
+#define BOARD_X 340
 #define BOARD_Y 100
+#define BOARD_WIDTH 340
+#define BOARD_HEIGHT 340

@@ -14,6 +14,7 @@ namespace
 {
     const char* sViewPaths [] =
     {
+        "",
         "img/Blue.png",
         "img/Green.png",
         "img/Purple.png",

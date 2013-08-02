@@ -24,6 +24,14 @@ void JewelsGame::initialize ( Engine::Scene* scene )
 {
     mScene = scene;
     mController.initialize ();
+    
+    // Setup the board view
+    Engine::Rect viewRect;
+    viewRect.x = BOARD_X;
+    viewRect.y = BOARD_Y;
+    viewRect.width = BOARD_WIDTH;
+    viewRect.height = BOARD_HEIGHT;
+    mView.initialize(viewRect, scene, &mController);
 }
 
 void JewelsGame::update ()

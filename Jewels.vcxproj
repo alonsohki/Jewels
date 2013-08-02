@@ -17,6 +17,7 @@
     <ClInclude Include="src\engine\IEntity.h" />
     <ClInclude Include="src\engine\Lambda.h" />
     <ClInclude Include="src\engine\Observable.h" />
+    <ClInclude Include="src\engine\Rect.h" />
     <ClInclude Include="src\engine\Scene.h" />
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\engine\Vector.h" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="src\engine\FrameCounter.cpp" />
     <ClCompile Include="src\engine\Scene.cpp" />
+    <ClCompile Include="src\GameBoardView.cpp" />
     <ClCompile Include="src\JewelsGame.cpp" />
     <ClCompile Include="src\GameBoard.cpp" />
     <ClCompile Include="src\GameController.cpp" />

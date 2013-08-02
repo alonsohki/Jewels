@@ -16,13 +16,15 @@ namespace Game
     class GameController : public Engine::Observable<GameController&, const GameEvent&>
     {
     public:
-                    GameController      ( int width, int height );
-                    ~GameController     ();
+                            GameController      ( int width, int height );
+                            ~GameController     ();
 
-        void        initialize          ();
+        void                initialize          ();
 
-        void        swapJewels          ( int x1, int y1, int x2, int y2 );
-        bool        update              ();
+        const GameBoard&    getBoard            () const { return mBoard; }
+
+        void                swapJewels          ( int x1, int y1, int x2, int y2 );
+        bool                update              ();
 
     private:
         GameBoard   mBoard;
