@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include "engine/FrameCounter.h"
 #include "engine/Scene.h"
-#include "JewelFactory.h"
+#include "JewelsGame.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_Image.h"
 #include <sstream>
@@ -19,8 +19,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
     FrameCounter fpsCounter;
     Scene scene;
-    JewelFactory factory;
     SDL_Event event;
+    JewelsGame game;
 
     // Load the background
     SDL_Surface* bkg = IMG_Load("img/BackGround.jpg");
@@ -36,22 +36,40 @@ int _tmain(int argc, _TCHAR* argv[])
     SDL_WM_SetCaption(APP_NAME, NULL);
     SDL_Surface* surf = SDL_SetVideoMode(bkg->w, bkg->h, 32, SDL_HWSURFACE);
 
-    // Test adding some jewels
-    for ( int i = 1; i <= 2; ++i )
-    {
-        auto jewel = factory.createView(JewelFactory::GREEN);
-        jewel->setPosition(vec2i(50*i, 50));
-        jewel->setSelected(i == 1);
-        scene.addEntity(jewel);
-    }
-
     // Game loop
+    vec2i lastClick ( 0, 0 );
+    game.initialize(&scene);
     do
     {
+        game.update();
         scene.update();
         scene.draw(surf);
 
         SDL_PollEvent(&event);
+        switch ( event.type )
+        {
+            // Handle mouse clicks
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                lastClick = vec2i(0,0);
+                break;
+            }
+            case SDL_MOUSEBUTTONUP:
+            {
+                vec2i click;
+                SDL_GetMouseState(&click[0], &click[1]);
+
+                // Avoid multiple events for the same mouse up event.
+                if ( click != lastClick )
+                {
+                    game.handleClick(click[0], click[1]);
+                    lastClick = click;
+                }
+                break;
+            }
+
+            default: break;
+        }
 
         // FPS counter
         fpsCounter.addFrame();

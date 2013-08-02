@@ -12,11 +12,11 @@
 
 namespace Engine
 {
-    template<class T>
+    template<typename... Params>
     class Observable
     {
     public:
-        typedef FastDelegate<void (T&)> Delegate;
+        typedef FastDelegate<void (Params...)> Delegate;
 
     public:
         Observable () : mChanged(false) {}
@@ -31,12 +31,12 @@ namespace Engine
         }
 
     protected:
-        void notifyObservers ( T& p )
+        void notifyObservers ( Params... p )
         {
             if ( mChanged )
             {
                 for ( auto& del : mDelegates )
-                    del ( p );
+                    del ( p... );
                 mChanged = false;
             }
         }

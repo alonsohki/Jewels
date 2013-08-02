@@ -7,23 +7,13 @@
 
 #pragma once
 
+#include "JewelType.h"
 #include "JewelView.h"
 
 namespace Game
 {
     class JewelFactory final
     {
-    public:
-        enum JewelType
-        {
-            BLUE,
-            GREEN,
-            PURPLE,
-            RED,
-            YELLOW,
-            TYPE_COUNT
-        };
-
     public:
                         JewelFactory        ();
                         ~JewelFactory       ();

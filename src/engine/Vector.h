@@ -55,6 +55,21 @@ namespace Engine
                 throw std::out_of_range("vector index");
             return v[idx];
         }
+
+        bool operator== ( const vec2& other ) const
+        {
+            for ( int i = 0; i < NUMELEMS(v); ++i )
+            {
+                if ( v[i] != other.v[i] )
+                    return false;
+            }
+            return true;
+        }
+
+        bool operator!= ( const vec2& other ) const
+        {
+            return !operator==(other);
+        }
     };
 
 
