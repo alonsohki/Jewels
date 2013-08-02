@@ -3,10 +3,12 @@
 #include "Config.h"
 #include <cstdio>
 #include <cstdlib>
+#include "engine/FrameCounter.h"
 #include "engine/Scene.h"
 #include "JewelFactory.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_Image.h"
+#include <sstream>
 #include <tchar.h>
 
 
@@ -15,6 +17,7 @@ int _tmain(int argc, _TCHAR* argv[])
     using namespace Engine;
     using namespace Game;
 
+    FrameCounter fpsCounter;
     Scene scene;
     JewelFactory factory;
     SDL_Event event;
@@ -48,7 +51,13 @@ int _tmain(int argc, _TCHAR* argv[])
         scene.update();
         scene.draw(surf);
 
-        SDL_WaitEvent(&event);
+        SDL_PollEvent(&event);
+
+        // FPS counter
+        fpsCounter.addFrame();
+        std::ostringstream caption;
+        caption << APP_NAME << " - FPS: " << fpsCounter.getFPS();
+        SDL_WM_SetCaption(caption.str().c_str(), NULL);
     }
     while ( event.type != SDL_QUIT );
 
