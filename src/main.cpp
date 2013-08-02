@@ -3,7 +3,8 @@
 #include "Config.h"
 #include <cstdio>
 #include <cstdlib>
-#include <SDL/SDL.h>
+#include "SDL/SDL.h"
+#include "SDL/SDL_Image.h"
 #include <tchar.h>
 
 
