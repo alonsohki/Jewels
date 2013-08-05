@@ -19,6 +19,12 @@ GameBoardView::GameBoardView ()
 
 GameBoardView::~GameBoardView ()
 {
+    // Delete all pending tweens
+    for ( auto tween : mTweens )
+    {
+        delete tween;
+    }
+
     if ( mViews != nullptr )
     {
         for ( int j = 0; j < mBoard->getHeight(); ++j )
@@ -85,6 +91,18 @@ void GameBoardView::setView ( int x, int y, JewelView* view )
     }
 }
 
+void GameBoardView::setJewelSelected ( int x, int y, const bool selected )
+{
+    JewelView* jv = getView ( x, y );
+    jv->setSelected ( selected );
+}
+
+bool GameBoardView::setJewelSelected ( int x, int y ) const
+{
+    JewelView* jv = getView ( x, y );
+    return jv->getSelected();
+}
+
 void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2 )
 {
     using namespace Engine;
@@ -92,11 +110,17 @@ void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2 )
     JewelView* jv1 = getView ( x1, y1 );
     JewelView* jv2 = getView ( x2, y2 );
 
-    auto tween1 = new PositionTween ( TweenType::LINEAR, jv1->getPosition(), jv2->getPosition(), SWAP_INTERVAL, [jv1] ( const vec2i& v ) { jv1->setPosition(v); } );
-    auto tween2 = new PositionTween ( TweenType::LINEAR, jv2->getPosition(), jv1->getPosition(), SWAP_INTERVAL, [jv2] ( const vec2i& v ) { jv2->setPosition(v); } );
+    auto tween1 = new VectorTween ( TweenType::LINEAR, jv1->getPosition(), jv2->getPosition(), SWAP_INTERVAL, [jv1] ( const vec2i& v ) { jv1->setPosition(v); } );
+    auto tween2 = new VectorTween ( TweenType::LINEAR, jv2->getPosition(), jv1->getPosition(), SWAP_INTERVAL, [jv2] ( const vec2i& v ) { jv2->setPosition(v); } );
 
     mTweens.push_back(tween1);
     mTweens.push_back(tween2);
+
+    tween1->setFinalizationHandler([this, jv1, jv2, x1, y1, x2, y2] ()
+    {
+        setView(x1, y1, jv2);
+        setView(x2, y2, jv1);
+    });
 }
 
 

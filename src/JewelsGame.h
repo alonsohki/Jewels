@@ -27,5 +27,6 @@ namespace Game
         GameBoard       mBoard;
         GameBoardView   mView;
         Engine::Scene*  mScene;
+        Engine::vec2i   mSelection;
     };
 }

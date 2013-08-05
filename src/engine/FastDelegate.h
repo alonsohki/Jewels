@@ -865,8 +865,10 @@ private:
 
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 
+    typedef Lambda<RetType (Arguments...)> LambdaType;
+
 	ClosureType m_Closure;
-    Lambda<RetType (Arguments...)> mLambda;
+    LambdaType mLambda;
 	
 public:
 
@@ -880,18 +882,18 @@ public:
 
 	FastDelegateV() { clear(); }
 
-    FastDelegateV(const Lambda<RetType (Arguments...)>& lambda)
+    FastDelegateV(const LambdaType& lambda)
     {
         clear ();
         mLambda = lambda;
-        bind(&mLambda, &Lambda<RetType (Arguments...)>::operator() );
+        bind(&mLambda, &LambdaType::operator() );
     }
 
 	FastDelegateV(const FastDelegateV &x) {
         clear ();
         mLambda = x.mLambda;
         if ( mLambda )
-            bind(&mLambda, &Lambda<RetType (Arguments...)>::operator() );
+            bind(&mLambda, &LambdaType::operator() );
         else
             m_Closure.CopyFrom(this, x.m_Closure);
     }
@@ -900,7 +902,7 @@ public:
         clear ();
         mLambda = x.mLambda;
         if ( mLambda )
-            bind(&mLambda, &Lambda<RetType (Arguments...)>::operator() );
+            bind(&mLambda, &LambdaType::operator() );
         else
             m_Closure.CopyFrom(this, x.m_Closure);
     }

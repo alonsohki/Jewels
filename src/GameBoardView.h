@@ -22,13 +22,15 @@ namespace Game
 
     class GameBoardView : public Engine::IEntity
     {
-        typedef Engine::Tween<Engine::vec2i>    PositionTween;
-        typedef std::vector<PositionTween*>     TweenVector;
+        typedef Engine::Tween<Engine::vec2i>    VectorTween;
+        typedef std::vector<VectorTween*>       TweenVector;
 
     public:
                     GameBoardView       ();
                     ~GameBoardView      ();
 
+        void        setJewelSelected    ( int x, int y, const bool selected );
+        bool        setJewelSelected    ( int x, int y ) const;
         void        swapJewels          ( int x1, int y1, int x2, int y2 );
         void        initialize          ( const Engine::Rect& rect, Engine::Scene* scene, GameBoard* board );
 

@@ -87,6 +87,11 @@ namespace Engine
             mFinalizationHandler = handler;
         }
 
+        void setFinalizationHandler ( const typename FinalizationHandler::LambdaType& lambda )
+        {
+            setFinalizationHandler ( FinalizationHandler(lambda) );
+        }
+
         bool hasFinished () const
         {
             return mFinished;

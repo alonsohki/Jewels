@@ -24,7 +24,7 @@ namespace Game
 
     public:
         void                    setSelected     ( const bool selected ) { mSelected = selected; }
-        bool                    setSelected     () const { return mSelected; }
+        bool                    getSelected     () const { return mSelected; }
 
 
         //--------------------------------------
