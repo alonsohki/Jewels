@@ -24,6 +24,10 @@ namespace Game
     {
         typedef Engine::Tween<Engine::vec2i>    VectorTween;
         typedef std::vector<VectorTween*>       TweenVector;
+    public:
+        typedef Engine::FastDelegate<void ()>   AnimationFinishedDelegate;
+    private:
+        typedef std::vector<AnimationFinishedDelegate>  AnimationFinishedVector;
 
     public:
                     GameBoardView       ();
@@ -31,7 +35,7 @@ namespace Game
 
         void        setJewelSelected    ( int x, int y, const bool selected );
         bool        setJewelSelected    ( int x, int y ) const;
-        void        swapJewels          ( int x1, int y1, int x2, int y2 );
+        void        swapJewels          ( int x1, int y1, int x2, int y2, const AnimationFinishedDelegate& del );
         void        initialize          ( const Engine::Rect& rect, Engine::Scene* scene, GameBoard* board );
 
    private:
@@ -46,11 +50,12 @@ namespace Game
 
 
     private:
-        Engine::Rect        mRect;
-        Engine::Scene*      mScene;
-        JewelFactory        mFactory;
-        JewelView**         mViews;
-        GameBoard*          mBoard;
-        TweenVector         mTweens;
+        Engine::Rect            mRect;
+        Engine::Scene*          mScene;
+        JewelFactory            mFactory;
+        JewelView**             mViews;
+        GameBoard*              mBoard;
+        TweenVector             mTweens;
+        AnimationFinishedVector mAnimationFinishedVector;
     };
 }

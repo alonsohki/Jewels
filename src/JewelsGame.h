@@ -24,6 +24,10 @@ namespace Game
         void        handleClick     ( int x, int y );
 
     private:
+        void        swapJewels      ( int x1, int y1, int x2, int y2, bool checkMatch );
+        bool        checkMatch      ( int x, int y );
+
+    private:
         GameBoard       mBoard;
         GameBoardView   mView;
         Engine::Scene*  mScene;

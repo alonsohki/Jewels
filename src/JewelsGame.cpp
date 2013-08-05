@@ -57,10 +57,42 @@ void JewelsGame::handleClick(int x, int y)
             int distance = abs(jewelX - mSelection[0]) + abs(jewelY - mSelection[1]);
             if ( distance == 1 )
             {
-                mView.swapJewels(jewelX, jewelY, mSelection[0], mSelection[1]);
+                swapJewels ( jewelX, jewelY, mSelection[0], mSelection[1], true );
             }
             mView.setJewelSelected(mSelection[0], mSelection[1], false);
             mSelection = Engine::vec2i(-1, -1);
         }
     }
+}
+
+
+void JewelsGame::swapJewels ( int x1, int y1, int x2, int y2, bool doCheckMatch )
+{
+    GameBoardView::AnimationFinishedDelegate::LambdaType del = [=] ()
+    {
+        // When finished playing the animation, swap the jewels internally
+        auto temp = mBoard.getJewel(x1, y1);
+        mBoard.setJewel(x1, y1, mBoard.getJewel(x2, y2));
+        mBoard.setJewel(x2, y2, temp);
+
+        if ( doCheckMatch )
+        {
+            // Did this result into a match?
+            const bool match1 = checkMatch(x1, y1);
+            const bool match2 = checkMatch(x2, y2);
+            if ( !match1 && !match2 )
+            {
+                // If this move didn't create matches, return the jewels
+                // to their original positions.
+                swapJewels(x2, y2, x1, y1, false);
+            }
+        }
+    };
+
+    mView.swapJewels(x1, y1, x2, y2, del);
+}
+
+bool JewelsGame::checkMatch ( int x, int y )
+{
+    return false;
 }

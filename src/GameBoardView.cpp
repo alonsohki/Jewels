@@ -103,7 +103,7 @@ bool GameBoardView::setJewelSelected ( int x, int y ) const
     return jv->getSelected();
 }
 
-void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2 )
+void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2, const AnimationFinishedDelegate& del )
 {
     using namespace Engine;
 
@@ -116,10 +116,14 @@ void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2 )
     mTweens.push_back(tween1);
     mTweens.push_back(tween2);
 
-    tween1->setFinalizationHandler([this, jv1, jv2, x1, y1, x2, y2] ()
+    tween1->setFinalizationHandler([this, jv1, jv2, x1, y1, x2, y2, del] ()
     {
         setView(x1, y1, jv2);
         setView(x2, y2, jv1);
+        if ( del )
+        {
+            mAnimationFinishedVector.push_back(del);
+        }
     });
 }
 
@@ -138,6 +142,12 @@ void GameBoardView::update ( int deltaTime )
             delete tween;
     }
     mTweens = newTweens;
+
+    for ( auto anim : mAnimationFinishedVector )
+    {
+        anim ();
+    }
+    mAnimationFinishedVector.clear ();
 }
 
 SDL_Surface* GameBoardView::getSurface ()
