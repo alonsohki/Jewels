@@ -70,6 +70,35 @@ namespace Engine
         {
             return !operator==(other);
         }
+
+        vec2 operator+ ( const vec2& other ) const
+        {
+            vec2 result = *this;
+            for ( int i = 0; i < NUMELEMS(v); ++i )
+            {
+                result[i] += other[i];
+            }
+            return result;
+        }
+
+        vec2 operator- ( const vec2& other ) const
+        {
+            vec2 result = *this;
+            for ( int i = 0; i < NUMELEMS(v); ++i )
+            {
+                result[i] -= other[i];
+            }
+            return result;
+        }
+
+        template<class K>
+        vec2 operator* ( const K& k ) const
+        {
+            vec2 result = *this;
+            for ( int i = 0; i < NUMELEMS(v); ++i )
+                result[i] = static_cast<T>(result[i] * k);
+            return result;
+        }
     };
 
 

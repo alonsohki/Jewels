@@ -8,7 +8,7 @@
 #pragma once
 
 #include "engine/Scene.h"
-#include "GameController.h"
+#include "GameBoard.h"
 #include "GameBoardView.h"
 
 namespace Game
@@ -20,11 +20,11 @@ namespace Game
                     ~JewelsGame     ();
 
         void        initialize      ( Engine::Scene* scene );
-        void        update          ();
+        void        update          ( int deltaTime );
         void        handleClick     ( int x, int y );
 
     private:
-        GameController  mController;
+        GameBoard       mBoard;
         GameBoardView   mView;
         Engine::Scene*  mScene;
     };

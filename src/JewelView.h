@@ -35,7 +35,7 @@ namespace Game
         //--------------------------------------
         // Methods inherited from IEntity
     public:
-        virtual void            update          ();
+        virtual void            update          ( int deltaTime );
         virtual SDL_Surface*    getSurface      ();
 
     private:

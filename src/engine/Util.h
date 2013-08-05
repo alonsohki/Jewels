@@ -20,6 +20,12 @@ namespace
         return std::min(std::max(min, value), max);
     }
 
+    template<class T>
+    T lerp(const T& from, const T& to, float delta)
+    {
+        return from + (to - from)*delta;
+    }
+
     // From http://sdl.beuc.net/sdl.wiki/Pixel_Access
     Uint32 SDL_GetPixel(SDL_Surface *surface, int x, int y)
     {

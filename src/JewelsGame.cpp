@@ -12,7 +12,7 @@ using namespace Game;
 
 JewelsGame::JewelsGame ()
 : mScene(nullptr)
-, mController(NUMCOLS, NUMROWS)
+, mBoard(NUMCOLS, NUMROWS)
 {
 }
 
@@ -23,7 +23,7 @@ JewelsGame::~JewelsGame ()
 void JewelsGame::initialize ( Engine::Scene* scene )
 {
     mScene = scene;
-    mController.initialize ();
+    mBoard.fillRandomly();
     
     // Setup the board view
     Engine::Rect viewRect;
@@ -31,14 +31,15 @@ void JewelsGame::initialize ( Engine::Scene* scene )
     viewRect.y = BOARD_Y;
     viewRect.width = BOARD_WIDTH;
     viewRect.height = BOARD_HEIGHT;
-    mView.initialize(viewRect, scene, &mController);
+    mView.initialize(viewRect, scene, &mBoard);
 }
 
-void JewelsGame::update ()
+void JewelsGame::update ( int deltaTime )
 {
 }
 
 void JewelsGame::handleClick(int x, int y)
 {
     printf("%d %d\n", x, y);
+    mView.swapJewels(0, 0, 0, 1);
 }

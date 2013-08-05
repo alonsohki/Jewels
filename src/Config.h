@@ -14,3 +14,4 @@
 #define BOARD_Y 100
 #define BOARD_WIDTH 340
 #define BOARD_HEIGHT 340
+#define SWAP_INTERVAL 300 // In miliseconds

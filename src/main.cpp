@@ -38,12 +38,15 @@ int _tmain(int argc, _TCHAR* argv[])
 
     // Game loop
     vec2i lastClick ( 0, 0 );
+    int lastTicks = SDL_GetTicks();
     game.initialize(&scene);
     do
     {
-        game.update();
-        scene.update();
+        int newTicks = SDL_GetTicks();
+        game.update(newTicks - lastTicks);
+        scene.update(newTicks - lastTicks);
         scene.draw(surf);
+        lastTicks = newTicks;
 
         SDL_PollEvent(&event);
         switch ( event.type )

@@ -5,15 +5,14 @@
 // AUTHORS:     Alberto Alonso <rydencillo@gmail.com>
 //
 
+#include "Config.h"
 #include "GameBoardView.h"
-#include "GameController.h"
 #include "JewelView.h"
 
 using namespace Game;
 
 GameBoardView::GameBoardView ()
 : mScene(nullptr)
-, mController(nullptr)
 , mViews(nullptr)
 {
 }
@@ -22,11 +21,9 @@ GameBoardView::~GameBoardView ()
 {
     if ( mViews != nullptr )
     {
-        auto& board = mController->getBoard();
-
-        for ( int j = 0; j < board.getHeight(); ++j )
+        for ( int j = 0; j < mBoard->getHeight(); ++j )
         {
-            for ( int i = 0; i < board.getWidth(); ++i )
+            for ( int i = 0; i < mBoard->getWidth(); ++i )
             {
                 auto cur = getView(i, j);
                 mScene->removeEntity ( cur );
@@ -41,23 +38,22 @@ GameBoardView::~GameBoardView ()
         mScene->removeEntity ( this );
 }
 
-void GameBoardView::initialize ( const Engine::Rect& rect, Engine::Scene* scene, GameController* controller )
+void GameBoardView::initialize ( const Engine::Rect& rect, Engine::Scene* scene, GameBoard* board )
 {
     mRect = rect;
     mScene = scene;
-    mController = controller;
+    mBoard = board;
 
-    auto& board = controller->getBoard ();
-    int xGap = rect.width / board.getWidth();
-    int yGap = rect.height / board.getHeight();
+    int xGap = rect.width / mBoard->getWidth();
+    int yGap = rect.height / mBoard->getHeight();
 
-    mViews = new JewelView*[board.getHeight() * board.getWidth()];
+    mViews = new JewelView*[mBoard->getHeight() * mBoard->getWidth()];
 
-    for ( int j = 0; j < board.getHeight(); ++j )
+    for ( int j = 0; j < mBoard->getHeight(); ++j )
     {
-        for ( int i = 0; i < board.getWidth(); ++i )
+        for ( int i = 0; i < mBoard->getWidth(); ++i )
         {
-            auto jewelType = board.getJewel(i, j);
+            auto jewelType = mBoard->getJewel(i, j);
             auto jewel = mFactory.createView(jewelType);
             jewel->setPosition(Engine::vec2i(mRect.x + xGap * i, mRect.y + yGap * j));
             mScene->addEntity(jewel);
@@ -72,10 +68,9 @@ JewelView* GameBoardView::getView ( int x, int y ) const
 {
     if ( mViews != nullptr )
     {
-        auto& board = mController->getBoard();
-        if ( x >= board.getWidth() || y >= board.getHeight() )
+        if ( x >= mBoard->getWidth() || y >= mBoard->getHeight() )
             throw std::out_of_range("x or y");
-        return mViews [ x + y * board.getWidth() ];
+        return mViews [ x + y * mBoard->getWidth() ];
     }
     return nullptr;
 }
@@ -84,18 +79,41 @@ void GameBoardView::setView ( int x, int y, JewelView* view )
 {
     if ( mViews != nullptr )
     {
-        auto& board = mController->getBoard();
-        if ( x >= board.getWidth() || y >= board.getHeight() )
+        if ( x >= mBoard->getWidth() || y >= mBoard->getHeight() )
             throw std::out_of_range("x or y");
-        mViews [ x + y * board.getWidth() ] = view;
+        mViews [ x + y * mBoard->getWidth() ] = view;
     }
+}
+
+void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2 )
+{
+    using namespace Engine;
+
+    JewelView* jv1 = getView ( x1, y1 );
+    JewelView* jv2 = getView ( x2, y2 );
+
+    auto tween1 = new PositionTween ( TweenType::LINEAR, jv1->getPosition(), jv2->getPosition(), SWAP_INTERVAL, [jv1] ( const vec2i& v ) { jv1->setPosition(v); } );
+    auto tween2 = new PositionTween ( TweenType::LINEAR, jv2->getPosition(), jv1->getPosition(), SWAP_INTERVAL, [jv2] ( const vec2i& v ) { jv2->setPosition(v); } );
+
+    mTweens.push_back(tween1);
+    mTweens.push_back(tween2);
 }
 
 
 //--------------------------------------
 // Methods inherited from IEntity
-void GameBoardView::update ()
+void GameBoardView::update ( int deltaTime )
 {
+    TweenVector newTweens;
+    for ( auto tween : mTweens )
+    {
+        tween->update ( deltaTime );
+        if ( tween->hasFinished() == false )
+            newTweens.push_back(tween);
+        else
+            delete tween;
+    }
+    mTweens = newTweens;
 }
 
 SDL_Surface* GameBoardView::getSurface ()

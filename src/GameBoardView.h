@@ -10,9 +10,11 @@
 #include "engine/IEntity.h"
 #include "engine/Rect.h"
 #include "engine/Scene.h"
-#include "GameEvent.h"
+#include "engine/Tween.h"
+#include "GameBoard.h"
 #include "JewelFactory.h"
 #include "JewelView.h"
+#include <vector>
 
 namespace Game
 {
@@ -20,30 +22,33 @@ namespace Game
 
     class GameBoardView : public Engine::IEntity
     {
+        typedef Engine::Tween<Engine::vec2i>    PositionTween;
+        typedef std::vector<PositionTween*>     TweenVector;
+
     public:
                     GameBoardView       ();
                     ~GameBoardView      ();
 
-        void        initialize          ( const Engine::Rect& rect, Engine::Scene* scene, GameController* controller );
-        JewelView*  getView             ( int x, int y ) const;
-    private:
-        void        setView             ( int x, int y, JewelView* view );
+        void        swapJewels          ( int x1, int y1, int x2, int y2 );
+        void        initialize          ( const Engine::Rect& rect, Engine::Scene* scene, GameBoard* board );
 
-    private:
-        void        handleGameEvent     ( GameController& controller, const GameEvent& evt );
+   private:
+        JewelView*  getView             ( int x, int y ) const;
+        void        setView             ( int x, int y, JewelView* view );
 
         //--------------------------------------
         // Methods inherited from IEntity
     public:
-        virtual void            update          ();
+        virtual void            update          ( int deltaTime );
         virtual SDL_Surface*    getSurface      ();
 
 
     private:
         Engine::Rect        mRect;
         Engine::Scene*      mScene;
-        GameController*     mController;
         JewelFactory        mFactory;
         JewelView**         mViews;
+        GameBoard*          mBoard;
+        TweenVector         mTweens;
     };
 }

@@ -25,7 +25,7 @@ namespace Engine
         void            addEntity       ( IEntity* entity );
         void            removeEntity    ( IEntity* entity );
 
-        void            update          ();
+        void            update          ( int deltaTime );
         void            draw            ( SDL_Surface* surface );
 
     private:

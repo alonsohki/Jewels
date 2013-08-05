@@ -18,7 +18,7 @@ namespace Engine
                                     IEntity         () : mZIndex(0), mPosition(0, 0), mScale(1, 1) {}
         virtual                     ~IEntity        () {}
 
-        virtual void                update          () = 0;
+        virtual void                update          ( int deltaTime ) = 0;
         virtual SDL_Surface*        getSurface      () = 0;
 
         float                       getZIndex       () const { return mZIndex; }

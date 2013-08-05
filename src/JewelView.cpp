@@ -90,7 +90,7 @@ void JewelView::generateBitmaps ( SDL_Surface* from )
 
 //--------------------------------------
 // Methods inherited from IEntity
-void JewelView::update ()
+void JewelView::update ( int deltaTime )
 {
 }
 

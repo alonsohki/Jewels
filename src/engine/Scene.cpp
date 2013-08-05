@@ -38,11 +38,11 @@ void Scene::removeEntity ( IEntity* entity )
     mEntities.erase ( entity );
 }
 
-void Scene::update ()
+void Scene::update ( int deltaTime )
 {
     for ( auto& entity : mEntities )
     {
-        entity->update ();
+        entity->update ( deltaTime );
     }
 }
 

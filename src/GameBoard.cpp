@@ -28,7 +28,6 @@ void GameBoard::fillRandomly ()
 {
     std::random_device rd;
     std::default_random_engine e1(rd());
-    e1.seed(10040);
     std::uniform_int_distribution<int> rand_jewel(JewelType::FIRST_JEWEL, JewelType::LAST_JEWEL);
 
     // Fill randomly
@@ -41,9 +40,9 @@ void GameBoard::fillRandomly ()
     }
 
     // Make sure that we didn't create matches
-    for ( int j = 0; j < mHeight-1; ++j )
+    for ( int j = 0; j < mHeight; ++j )
     {
-        for ( int i = 0; i < mWidth-1; ++i )
+        for ( int i = 0; i < mWidth; ++i )
         {
             auto cur = getJewel(i, j);
             // Are the following two jewels equal?

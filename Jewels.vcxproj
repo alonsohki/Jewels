@@ -19,12 +19,12 @@
     <ClInclude Include="src\engine\Observable.h" />
     <ClInclude Include="src\engine\Rect.h" />
     <ClInclude Include="src\engine\Scene.h" />
+    <ClInclude Include="src\engine\Tween.h" />
     <ClInclude Include="src\engine\Util.h" />
     <ClInclude Include="src\engine\Vector.h" />
     <ClInclude Include="src\JewelsGame.h" />
     <ClInclude Include="src\GameBoard.h" />
     <ClInclude Include="src\GameBoardView.h" />
-    <ClInclude Include="src\GameController.h" />
     <ClInclude Include="src\GameEvent.h" />
     <ClInclude Include="src\JewelFactory.h" />
     <ClInclude Include="src\JewelType.h" />
@@ -37,7 +37,6 @@
     <ClCompile Include="src\GameBoardView.cpp" />
     <ClCompile Include="src\JewelsGame.cpp" />
     <ClCompile Include="src\GameBoard.cpp" />
-    <ClCompile Include="src\GameController.cpp" />
     <ClCompile Include="src\JewelFactory.cpp" />
     <ClCompile Include="src\JewelView.cpp" />
     <ClCompile Include="src\main.cpp" />
