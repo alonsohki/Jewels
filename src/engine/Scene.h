@@ -30,6 +30,7 @@ namespace Engine
 
     private:
         EntitySet       mEntities;
+        EntitySet       mGarbage;
         SDL_Surface*    mBackground;
     };
 }

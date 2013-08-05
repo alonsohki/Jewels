@@ -118,8 +118,6 @@ void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2, const Animation
     // If there are no jewels there, just return.
     if ( jv1 == nullptr || jv2 == nullptr )
     {
-        if ( del )
-            del ();
         return;
     }
 
@@ -146,18 +144,14 @@ void GameBoardView::destroyJewel ( int x, int y, const AnimationFinishedDelegate
 
     JewelView* jv = getView ( x, y );
 
-    auto tween = new VectorTween ( TweenType::LINEAR, vec2i(10, 10), vec2i(15, 15), SWAP_INTERVAL,
-        [jv] ( const vec2i& v )
-        {
-            jv->setScale(vec2f(v[0] / 10.0f, v[1] / 10.0f));
-        } );
+    auto newPosition = jv->getPosition() + vec2i(0, BOARD_HEIGHT * 3);
+    auto tween = new VectorTween ( TweenType::LINEAR, jv->getPosition(), newPosition, SWAP_INTERVAL, [jv] ( const vec2i& v ) { jv->setPosition(v); } );
 
     mTweens.push_back(tween);
 
     tween->setFinalizationHandler([this, x, y, jv, del] ()
     {
         mScene->removeEntity(jv);
-        delete jv;
         setView(x, y, nullptr);
         if ( del )
         {

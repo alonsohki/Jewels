@@ -36,11 +36,19 @@ void Scene::addEntity ( IEntity* entity )
 void Scene::removeEntity ( IEntity* entity )
 {
     mEntities.erase ( entity );
+    mGarbage.insert ( entity );
 }
 
 void Scene::update ( int deltaTime )
 {
-    for ( auto& entity : mEntities )
+    for ( auto& entry : mGarbage )
+    {
+        delete entry;
+    }
+    mGarbage.clear();
+
+    auto entities = mEntities;
+    for ( auto& entity : entities )
     {
         entity->update ( deltaTime );
     }
@@ -93,7 +101,17 @@ void Scene::draw ( SDL_Surface* surface )
             dstRect.w = (Uint16)(srcRect.w * scale[0]);
             dstRect.h = (Uint16)(srcRect.h * scale[1]);
 
-            SDL_LowerBlit(entitySurface, &srcRect, surface, &dstRect);
+            // Check that we are trying to draw in bounds
+            if ( dstRect.x > 0 && dstRect.x < surface->w &&
+                 dstRect.y > 0 && dstRect.y < surface->h )
+            {
+                // Clamp the size to fit in the surface
+                if ( (dstRect.x+dstRect.w) > surface->w )
+                    dstRect.w = surface->w - dstRect.x;
+                if ( (dstRect.y+dstRect.h) > surface->h )
+                    dstRect.h = surface->h - dstRect.y;
+                SDL_LowerBlit(entitySurface, &srcRect, surface, &dstRect);
+            }
         }
     }
 
