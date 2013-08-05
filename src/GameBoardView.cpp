@@ -91,16 +91,21 @@ void GameBoardView::setView ( int x, int y, JewelView* view )
     }
 }
 
-void GameBoardView::setJewelSelected ( int x, int y, const bool selected )
+bool GameBoardView::setJewelSelected ( int x, int y, const bool selected )
 {
     JewelView* jv = getView ( x, y );
-    jv->setSelected ( selected );
+    if ( jv != nullptr )
+    {
+        jv->setSelected ( selected );
+        return true;
+    }
+    return false;
 }
 
-bool GameBoardView::setJewelSelected ( int x, int y ) const
+bool GameBoardView::getJewelSelected ( int x, int y ) const
 {
     JewelView* jv = getView ( x, y );
-    return jv->getSelected();
+    return jv != nullptr && jv->getSelected();
 }
 
 void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2, const AnimationFinishedDelegate& del )
@@ -109,6 +114,14 @@ void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2, const Animation
 
     JewelView* jv1 = getView ( x1, y1 );
     JewelView* jv2 = getView ( x2, y2 );
+
+    // If there are no jewels there, just return.
+    if ( jv1 == nullptr || jv2 == nullptr )
+    {
+        if ( del )
+            del ();
+        return;
+    }
 
     auto tween1 = new VectorTween ( TweenType::LINEAR, jv1->getPosition(), jv2->getPosition(), SWAP_INTERVAL, [jv1] ( const vec2i& v ) { jv1->setPosition(v); } );
     auto tween2 = new VectorTween ( TweenType::LINEAR, jv2->getPosition(), jv1->getPosition(), SWAP_INTERVAL, [jv2] ( const vec2i& v ) { jv2->setPosition(v); } );
@@ -120,6 +133,32 @@ void GameBoardView::swapJewels ( int x1, int y1, int x2, int y2, const Animation
     {
         setView(x1, y1, jv2);
         setView(x2, y2, jv1);
+        if ( del )
+        {
+            mAnimationFinishedVector.push_back(del);
+        }
+    });
+}
+
+void GameBoardView::destroyJewel ( int x, int y, const AnimationFinishedDelegate& del )
+{
+    using namespace Engine;
+
+    JewelView* jv = getView ( x, y );
+
+    auto tween = new VectorTween ( TweenType::LINEAR, vec2i(10, 10), vec2i(15, 15), SWAP_INTERVAL,
+        [jv] ( const vec2i& v )
+        {
+            jv->setScale(vec2f(v[0] / 10.0f, v[1] / 10.0f));
+        } );
+
+    mTweens.push_back(tween);
+
+    tween->setFinalizationHandler([this, x, y, jv, del] ()
+    {
+        mScene->removeEntity(jv);
+        delete jv;
+        setView(x, y, nullptr);
         if ( del )
         {
             mAnimationFinishedVector.push_back(del);

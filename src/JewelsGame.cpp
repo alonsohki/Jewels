@@ -50,7 +50,8 @@ void JewelsGame::handleClick(int x, int y)
         if ( mSelection[0] == -1 )
         {
             mSelection = Engine::vec2i(jewelX, jewelY);
-            mView.setJewelSelected(mSelection[0], mSelection[1], true);
+            if ( !mView.setJewelSelected(mSelection[0], mSelection[1], true) )
+                mSelection = Engine::vec2i(-1, -1);
         }
         else
         {
@@ -92,7 +93,54 @@ void JewelsGame::swapJewels ( int x1, int y1, int x2, int y2, bool doCheckMatch 
     mView.swapJewels(x1, y1, x2, y2, del);
 }
 
+void JewelsGame::destroyJewel ( int x, int y )
+{
+    GameBoardView::AnimationFinishedDelegate::LambdaType del = [=] ()
+    {
+    };
+    mView.destroyJewel(x, y, del);
+    mBoard.setJewel(x, y, JewelType::EMPTY);
+}
+
 bool JewelsGame::checkMatch ( int x, int y )
 {
-    return false;
+    auto cur = mBoard.getJewel(x, y);
+
+    // First find the left-most jewel of the same kind
+    int left;
+    for ( left = x; left > 0 && (mBoard.getJewel(left-1, y) == cur); --left );
+    // And then the right-most jewel of the same kind
+    int right;
+    for ( right = x; right < mBoard.getWidth() && (mBoard.getJewel(right+1, y) == cur); ++right );
+
+    // First find the top-most jewel of the same kind
+    int top;
+    for ( top = y; top > 0 && (mBoard.getJewel(x, top-1) == cur); --top );
+    // And then the bottom-most jewel of the same kind
+    int bottom;
+    for ( bottom = y; bottom < mBoard.getHeight() && (mBoard.getJewel(x, bottom+1) == cur); ++bottom );
+
+    bool match = false;
+    // Got an horizontal match?
+    if ( (right-left+1) >= 3 )
+    {
+        match = true;
+        while ( left <= right )
+        {
+            destroyJewel(left, y);
+            ++left;
+        }
+    }
+    // Got a vertical match?
+    if ( (bottom-top+1) >= 3 )
+    {
+        match = true;
+        while ( top <= bottom )
+        {
+            destroyJewel(x, top);
+            ++top;
+        }
+    }
+
+    return match;
 }

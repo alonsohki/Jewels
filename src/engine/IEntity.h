@@ -23,14 +23,14 @@ namespace Engine
 
         float                       getZIndex       () const { return mZIndex; }
         const vec2i&                getPosition     () const { return mPosition; }
-        const vec2i&                getScale        () const { return mScale; }
+        const vec2f&                getScale        () const { return mScale; }
         void                        setZIndex       ( const float& idx ) { mZIndex = idx; }
         void                        setPosition     ( const vec2i& pos ) { mPosition = pos; }
-        void                        setScale        ( const vec2i& scale ) { mScale = scale; }
+        void                        setScale        ( const vec2f& scale ) { mScale = scale; }
 
     private:
         float   mZIndex;
         vec2i   mPosition;
-        vec2i   mScale;
+        vec2f   mScale;
     };
 }

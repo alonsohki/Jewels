@@ -33,9 +33,10 @@ namespace Game
                     GameBoardView       ();
                     ~GameBoardView      ();
 
-        void        setJewelSelected    ( int x, int y, const bool selected );
-        bool        setJewelSelected    ( int x, int y ) const;
+        bool        setJewelSelected    ( int x, int y, const bool selected );
+        bool        getJewelSelected    ( int x, int y ) const;
         void        swapJewels          ( int x1, int y1, int x2, int y2, const AnimationFinishedDelegate& del );
+        void        destroyJewel        ( int x, int y, const AnimationFinishedDelegate& del );
         void        initialize          ( const Engine::Rect& rect, Engine::Scene* scene, GameBoard* board );
 
    private:

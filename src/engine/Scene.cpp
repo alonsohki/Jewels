@@ -79,7 +79,7 @@ void Scene::draw ( SDL_Surface* surface )
         if ( entitySurface != nullptr )
         {
             const vec2i& position = entity->getPosition();
-            const vec2i& scale = entity->getScale();
+            const vec2f& scale = entity->getScale();
 
             SDL_Rect srcRect;
             srcRect.x = 0;
@@ -90,8 +90,8 @@ void Scene::draw ( SDL_Surface* surface )
             SDL_Rect dstRect;
             dstRect.x = position[0];
             dstRect.y = position[1];
-            dstRect.w = srcRect.w * scale[0];
-            dstRect.h = srcRect.h * scale[1];
+            dstRect.w = (Uint16)(srcRect.w * scale[0]);
+            dstRect.h = (Uint16)(srcRect.h * scale[1]);
 
             SDL_LowerBlit(entitySurface, &srcRect, surface, &dstRect);
         }

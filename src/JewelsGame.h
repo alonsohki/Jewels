@@ -25,6 +25,7 @@ namespace Game
 
     private:
         void        swapJewels      ( int x1, int y1, int x2, int y2, bool checkMatch );
+        void        destroyJewel    ( int x, int y );
         bool        checkMatch      ( int x, int y );
 
     private:
